@@ -1,0 +1,35 @@
+name: On Push
+on:
+  push:
+#    branches:
+#      - main
+
+jobs:
+  publish-snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          java-version: 21
+          distribution: temurin
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+      - name: Setup GPG keys
+        run:
+          echo "${{ secrets.GPG_PUBLIC_KEY }}" | gpg --import
+          echo "${{ secrets.GPG_SECRET_KEY }}" | gpg --import
+      - name: Publish to local staging repository
+        run: ./gradlew publish
+      - name: Deploy to Maven Central
+        run: ./gradlew jreleaserDeploy
+        env:
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JRELEASER_NEXUS2_SNAPSHOT_DEPLOY_USERNAME: ${{ secrets.JRELEASER_NEXUS2_SNAPSHOT_DEPLOY_USERNAME }}
+          JRELEASER_NEXUS2_SNAPSHOT_DEPLOY_PASSWORD: ${{ secrets.JRELEASER_NEXUS2_SNAPSHOT_DEPLOY_PASSWORD }}
+          RELEASE_VERSION: 0.1.0-SNAPSHOT
