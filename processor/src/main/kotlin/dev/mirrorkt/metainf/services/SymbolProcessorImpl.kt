@@ -14,7 +14,7 @@ import com.google.devtools.ksp.validate
 import dev.mirrorkt.metainf.services.util.getKSAnnotationsByType
 import java.io.IOException
 
-class SymbolProcessorImpl(
+internal class SymbolProcessorImpl(
     private val logger: KSPLogger,
     private val codeGenerator: CodeGenerator,
 ) : SymbolProcessor {
