@@ -1,0 +1,44 @@
+categories:
+  - title: "🚀 Feature"
+    labels:
+      - feature
+  - title: "🐛 Bug Fixes"
+    labels:
+      - bug
+  - title: "📖 Docs"
+    labels:
+      - documentation
+  - title: "🔧 Maintenance"
+    labels:
+      - chore
+      - dependencies
+autolabeler:
+  - label: "feature"
+    branch:
+      - "/^feat/i"
+      - "/^feature/i"
+      - "/^features/i"
+  - label: "bug"
+    branch:
+      - "/^fix/"
+  - label: "documentation"
+    branch:
+      - "/^docs/"
+version-resolver:
+  major:
+    labels:
+      - "major"
+  minor:
+    labels:
+      - "minor"
+      - "feature"
+  patch:
+    labels:
+      - "patch"
+  default: "patch"
+
+template: |
+  ## What Changed
+  $CHANGES
+name-template: $RESOLVED_VERSION
+tag-template: $RESOLVED_VERSION
