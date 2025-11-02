@@ -1,0 +1,24 @@
+name: Push
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  publish-snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          java-version: 21
+          distribution: temurin
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+      - name: Gradle Build
+        run: ./gradlew build
